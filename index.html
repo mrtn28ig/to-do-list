@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>TO-DOIT</title>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="style.css" />
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@2.18.0/dist/full.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2/dist/tailwind.min.css" rel="stylesheet" />
+    <link href="https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css" rel="stylesheet" />
+
+    <link rel="icon" href="favicon.ico" />
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <h1>TO-DOIT</h1>
+        <div class="alert-message"></div>
+
+        <div class="progress-container mb-4 w-full">
+          <div class="stats stats-horizontal shadow w-full mb-4">
+            <div class="stat" title="Total number of tasks">
+              <div class="stat-figure text-primary">
+                <i class="bx bx-task text-2xl"></i>
+              </div>
+              <div class="stat-title">Total Tasks</div>
+              <div class="stat-value text-primary total-counter">0</div>
+            </div>
+            <div class="stat" title="Tasks you've completed">
+              <div class="stat-figure text-success">
+                <i class="bx bx-check-circle text-2xl"></i>
+              </div>
+              <div class="stat-title">Completed</div>
+              <div class="stat-value text-success completed-counter">0</div>
+            </div>
+            <div class="stat" title="Tasks remaining">
+              <div class="stat-figure text-warning">
+                <i class="bx bx-time text-2xl"></i>
+              </div>
+              <div class="stat-title">Pending</div>
+              <div class="stat-value text-warning pending-counter">0</div>
+            </div>
+            <div class="stat" title="Overall task progress">
+              <div class="stat-figure text-info">
+                <i class="bx bx-pie-chart-alt text-2xl"></i>
+              </div>
+              <div class="stat-title">Progress</div>
+              <div class="stat-value text-info percentage-display">0%</div>
+            </div>
+          </div>
+          <div class="w-full bg-gray-200 rounded-full h-3 mb-4">
+            <div class="progress-bar bg-primary h-3 rounded-full transition-all duration-500" style="width: 0%"></div>
+          </div>
+        </div>
+
+        <!-- Input Section -->
+        <div class="input-section">
+          <input type="text" placeholder="Add a todo . . ." class="input input-bordered input-secondary w-full max-w-xs" />
+          <input type="date" class="input input-bordered input-secondary w-full max-w-xs schedule-date" />
+          <select class="select select-bordered priority-select w-full max-w-xs">
+            <option value="0" selected>Priority: Low</option>
+            <option value="1">Priority: Medium</option>
+            <option value="2">Priority: High</option>
+          </select>
+          <button class="btn btn-secondary add-task-button">
+            <i class="bx bx-plus bx-sm"></i>
+          </button>
+        </div>
+      </header>
+
+      <div class="search-filter-section mb-4 w-full">
+        <div class="flex flex-col sm:flex-row gap-4 w-full">
+          <div class="flex-1">
+            <div class="relative">
+              <input type="text" placeholder="Search tasks..." class="input input-bordered w-full pl-10 search-input" />
+              <i class="bx bx-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+            </div>
+          </div>
+
+          <div class="dropdown">
+            <label tabindex="0" class="btn btn-outline">
+              <i class="bx bx-filter mr-2"></i> Filter
+            </label>
+            <ul tabindex="0" class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52">
+              <li><a data-filter="all">All Tasks</a></li>
+              <li><a data-filter="pending">Pending</a></li>
+              <li><a data-filter="completed">Completed</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="todos-filter flex justify-between items-center mb-4">
+        <div class="flex gap-2">
+          <div class="dropdown">
+            <label tabindex="0" class="btn btn-ghost btn-sm">
+              <i class="bx bx-sort mr-1"></i> Sort
+            </label>
+            <ul tabindex="0" class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52">
+              <li><a onclick="todoApp?.uiManager?.handleFilterTodos('all')">All</a></li>
+              <li><a onclick="todoApp?.uiManager?.handleFilterTodos('pending')">Pending</a></li>
+              <li><a onclick="todoApp?.uiManager?.handleFilterTodos('completed')">Completed</a></li>
+            </ul>
+          </div>
+
+          <button class="btn btn-ghost btn-sm help-btn" title="Keyboard Shortcuts">
+            <i class="bx bx-help-circle"></i>
+          </button>
+        </div>
+
+        <button class="btn btn-error delete-all-btn">
+          <i class="bx bx-trash mr-2"></i> Delete All
+        </button>
+      </div>
+
+      <div class="table-container overflow-x-auto">
+        <table class="table table-zebra w-full">
+          <thead>
+            <tr>
+              <th class="w-2/5">Task</th>
+              <th class="w-1/5">Due Date</th>
+              <th class="w-1/5">Priority</th>
+              <th class="w-1/5">Actions</th>
+            </tr>
+          </thead>
+          <tbody class="todos-list-body"></tbody>
+        </table>
+      </div>
+
+      <div class="empty-state hidden">
+        <i class="bx bx-check-shield text-6xl"></i>
+        <p>You're all caught up! 🎉</p>
+      </div>
+    </div>
+
+    <!-- Theme switcher -->
+    <div class="theme-switcher">
+      <div class="dropdown dropdown-left">
+        <label tabindex="0" class="btn m-1">
+          <i class="bx bxs-palette bx-sm"></i>
+        </label>
+        <ul tabindex="0" class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52">
+          <li class="theme-item" theme="light"><a>Light</a></li>
+          <li class="theme-item" theme="dark"><a>Dark</a></li>
+          <li class="theme-item" theme="cupcake"><a>Cupcake</a></li>
+          <li class="theme-item" theme="dracula"><a>Dracula</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Help Modal -->
+    <div id="help-modal" class="modal">
+      <div class="modal-box">
+        <h3 class="font-bold text-lg mb-4">
+          <i class="bx bx-keyboard mr-2"></i> Keyboard Shortcuts
+        </h3>
+        <div class="grid gap-2">
+          <div class="flex justify-between"><span>Add Task</span><kbd class="kbd kbd-sm">Ctrl + N</kbd></div>
+          <div class="flex justify-between"><span>Search</span><kbd class="kbd kbd-sm">Ctrl + F</kbd></div>
+          <div class="flex justify-between"><span>Show All</span><kbd class="kbd kbd-sm">Ctrl + A</kbd></div>
+          <div class="flex justify-between"><span>Cancel</span><kbd class="kbd kbd-sm">Escape</kbd></div>
+        </div>
+        <div class="modal-action">
+          <button class="btn btn-ghost close-help-modal">Close</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- JS -->
+    <script src="main.js"></script>
+  </body>
+</html>

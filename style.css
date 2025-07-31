@@ -1,0 +1,127 @@
+/* Import fonts */
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap");
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
+
+body {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 30px;
+}
+
+.container {
+  width: 100%;
+  max-width: 960px;
+  background: oklch(var(--b1) / 0.95);
+  box-shadow: 0 0 30px rgba(0, 0, 0, 0.1);
+  border-radius: 12px;
+  padding: 24px;
+  animation: fadeIn 0.6s ease-in-out;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+h1 {
+  font-size: 2.25rem;
+  font-weight: 800;
+  background: linear-gradient(to right, oklch(var(--p)), oklch(var(--s)));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.input-section {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+}
+
+.priority-select {
+  min-width: 160px;
+}
+
+.alert-message {
+  margin-bottom: 1rem;
+  display: none;
+}
+
+.alert-message.show {
+  display: block;
+}
+
+.progress-bar {
+  background: linear-gradient(to right, oklch(var(--p)), oklch(var(--su)));
+}
+
+.theme-switcher {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 1000;
+}
+
+.table-container {
+  max-height: 360px;
+  overflow-y: auto;
+  border: 1px solid oklch(var(--b3));
+  border-radius: 8px;
+}
+
+.todo-item {
+  transition: background 0.3s;
+}
+.todo-item:hover {
+  background: oklch(var(--b2) / 0.2);
+}
+
+.priority-badge {
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  display: inline-block;
+}
+
+.priority-low {
+  background-color: #d1fae5;
+  color: #047857;
+}
+.priority-medium {
+  background-color: #fef3c7;
+  color: #b45309;
+}
+.priority-high {
+  background-color: #fee2e2;
+  color: #b91c1c;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 40px 20px;
+  color: oklch(var(--bc) / 0.6);
+}
+
+.empty-state i {
+  font-size: 48px;
+  margin-bottom: 16px;
+  opacity: 0.5;
+}
